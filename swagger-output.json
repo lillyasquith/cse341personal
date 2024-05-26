@@ -5,7 +5,7 @@
     "description": "Description",
     "version": "1.0.0"
   },
-  "host": "localhost:3001",
+  "host": "cse341w05-w08.onrender.com",
   "basePath": "/",
   "paths": {
     "/": {
