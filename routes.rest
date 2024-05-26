@@ -1,0 +1,34 @@
+// LOCALHOST 
+### Get all 
+GET http://localhost:3001/artists
+
+### Get artist by id 
+GET http://localhost:3001/artists/6652b1eb6a196f03139e9417
+
+### Create artist 
+POST http://localhost:3001/artists HTTP/1.1 
+content-type: application/json
+
+{
+"firstName": "Pablo",
+"lastName": "Picasso",
+"nationality": "Spanish",
+"period": "Cubism",
+"year": "1881 - 1973"
+}
+
+### PUT artist 
+PUT http://localhost:3001/artists/6652bcc492263bff76cbbb1a HTTP/1.1 
+content-type: application/json
+
+{
+"firstName": "Pablo",
+"lastName": "Picasso",
+"nationality": "French",
+"period": "Post-Impressionism",
+"year": "1881 - 1973"
+}
+
+### DELETE artist 
+DELETE http://localhost:3001/artists/6652bcc492263bff76cbbb1a HTTP/1.1 
+content-type: application/json

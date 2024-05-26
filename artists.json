@@ -1,0 +1,23 @@
+{
+  "artist1": {
+    "firstName": "Vincent",
+    "lastName": "van Gogh",
+    "nationality": "Dutch",
+    "period": "Post-Impressionism",
+    "year": "1853 - 1890"
+  },
+  "artist2": {
+    "firstName": "Leonardo",
+    "lastName": "da Vinci",
+    "nationality": "Italian",
+    "period": "High Renaissance",
+    "year": "1452 - 1519"
+  },
+  "artist3": {
+    "firstName": "Claude",
+    "lastName": "Monet",
+    "nationality": "French",
+    "period": "Impressionism",
+    "year": "1840 - 1926"
+  }
+}
