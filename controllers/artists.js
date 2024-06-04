@@ -19,6 +19,9 @@ const getAll = async (req, res) => {
 };
 
 const getSingle = async (req, res) => {
+  if (!ObjectId.isValid(req.params.id)) {
+    res.status(400).json('Must use a valid contact id to find a contact.');
+  }
   try {
     const artistId = new ObjectId(req.params.id);
     const result = await mongodb
@@ -63,40 +66,46 @@ const createArtist = async (req, res) => {
 };
 
 const updateArtist = async (req, res) => {
-const artistId = new ObjectId(req.params.id);
-const artist = {
-  firstName: req.body.firstName,
-  lastName: req.body.lastName,
-  nationality: req.body.nationality,
-  period: req.body.period,
-  year: req.body.year
-  };
-  const response = await mongodb
-  .getDatabase()
-  .db()
-  .collection('artists')
-  .replaceOne({_id: artistId}, artist);
-  if (response.modifiedCount > 0) {
-    res.status(204).send();
+  if (!ObjectId.isValid(req.params.id)) {
+    res.status(400).json('Must use a valid contact id to update a contact.');
   }
-  else {
-    res.status(500).json(response.error || 'Some error occured while updating the artist');
+  const artistId = new ObjectId(req.params.id);
+  const artist = {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    nationality: req.body.nationality,
+    period: req.body.period,
+    year: req.body.year
+    };
+    const response = await mongodb
+    .getDatabase()
+    .db()
+    .collection('artists')
+    .replaceOne({_id: artistId}, artist);
+    if (response.modifiedCount > 0) {
+      res.status(204).send();
+    }
+    else {
+      res.status(500).json(response.error || 'Some error occured while updating the artist');
   }
 };
 
 const deleteArtist = async (req, res) => {
-const artistId = new ObjectId(req.params.id);
-const response = await mongodb
- .getDatabase()
- .db()
- .collection('artists')
- .deleteOne({_id: artistId});
- if (response.deletedCount > 0) {
-    res.status(200).send();
- }
- else {
-    res.status(500).json(response.error || 'Some error occured while updating the artist');
- }
+  if (!ObjectId.isValid(req.params.id)) {
+    res.status(400).json('Must use a valid contact id to delete a contact.');
+  }
+  const artistId = new ObjectId(req.params.id);
+  const response = await mongodb
+  .getDatabase()
+  .db()
+  .collection('artists')
+  .deleteOne({_id: artistId});
+  if (response.deletedCount > 0) {
+      res.status(200).send();
+  }
+  else {
+      res.status(500).json(response.error || 'Some error occured while updating the artist');
+  }
 }
 
 
