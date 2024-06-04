@@ -2,27 +2,43 @@ const mongodb = require('../data/database');
 const ObjectId = require('mongodb').ObjectId;
 
 const getAll = async (req, res) => {
-  const result = await mongodb
-    .getDatabase()
-    .db()
-    .collection('artists').find();
-  result.toArray().then((artists) => {
-    res.setHeader('Content-Type', 'application/json');
-    res.status(200).json(artists);
-  });
-};
-
-const getSingle = async (req, res) => {
-  const artistId = new ObjectId(req.params.id);
-  const result = await mongodb
+  try {
+    const result = await mongodb
     .getDatabase()
     .db()
     .collection('artists')
-    .find({ _id: artistId });
-  result.toArray().then((artists) => {
+    .find()
+    .toArray();
+
     res.setHeader('Content-Type', 'application/json');
-    res.status(200).json(artists[0]);
-  });
+    res.status(200).json(result);
+  } catch (error) {
+    console.error('Error retrieving artists:', error);
+    res.status(500).json({ error: 'An error occurred while retrieving artists' });
+  }
+};
+
+const getSingle = async (req, res) => {
+  try {
+    const artistId = new ObjectId(req.params.id);
+    const result = await mongodb
+      .getDatabase()
+      .db()
+      .collection('artists')
+      .find({ _id: artistId })
+      .toArray();
+
+      if (result.length === 0) {
+        res.status(404).json({ error: 'Artist not found' });
+        return;
+      }
+  
+      res.setHeader('Content-Type', 'application/json');
+      res.status(200).json(result[0]);
+  } catch (error) {
+    console.error('Error retrieving artist:', error);
+    res.status(500).json({ error: 'An error occurred while retrieving the artist' });
+  }
 };
 
 const createArtist = async (req, res) => {
