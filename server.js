@@ -1,11 +1,12 @@
 const express = require( 'express' );
-const app = express();
 const bodyParser = require('body-parser');
+const dotenv = require('dotenv').config();
 const mongodb = require('./data/database');
 const passport = require('passport');
 const session = require ('express-session');
 const cors = require ('cors');
-const gitHub = require('passport-github2').Strategy;
+const gitHubStrategy = require('passport-github2').Strategy;
+const app = express();
 
 const port = process.env.PORT || 3001;
 
@@ -22,16 +23,16 @@ app
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader(
     'Access-Control-Allow-Headers',
-    'Origin, X-Requested-With, Content-Type, Accept, Z-Key'
+    'Origin, X-Requested-With, Content-Type, Accept, Z-Key, Authorization'
     );
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     next();
   })
   .use(cors({methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']}))
   .use(cors({origin: '*'}))
-  .use('/', require('./routes'));
+  .use('/', require('./routes/index.js'));
 
-  passport.use(new gitHub({
+  passport.use(new gitHubStrategy({
     clientID: process.env.GITHUB_CLIENT_ID,
     clientSecret: process.env.GITHUB_CLIENT_SECRET,
     callbackURL: process.env.CALLBACK_URL
@@ -40,6 +41,24 @@ app
     return done(null, profile);
   }
 ));
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+})
+passport.deserializeUser((user, done) =>{
+  done(null, user);
+})
+
+app.get('/',(req, res) => {
+  res.send(req.session.user !== undefined ? `Logged in as Ly Dang` : 'Logged Out')
+})
+
+app.get('/github/callback', passport.authenticate('github', {
+  failureRedirect: '/api-docs', session: false}),
+  (req, res) => {
+    req.session.user = req.user;
+    res.redirect('/');
+  });
 
 
 process.on('uncaughtException', (err, origin) => {

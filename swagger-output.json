@@ -5,7 +5,7 @@
     "description": "Description",
     "version": "1.0.0"
   },
-  "host": "cse341w05-w08.onrender.com",
+  "host": "localhost:3001",
   "basePath": "/",
   "paths": {
     "/": {
@@ -31,7 +31,7 @@
         }
       },
       "post": {
-        "description": "",
+        "description": "Create Artist",
         "parameters": [
           {
             "name": "body",
@@ -89,7 +89,7 @@
         }
       },
       "put": {
-        "description": "",
+        "description": "Update Artist",
         "parameters": [
           {
             "name": "id",
@@ -132,7 +132,7 @@
         }
       },
       "delete": {
-        "description": "",
+        "description": "Delete Artist",
         "parameters": [
           {
             "name": "id",
